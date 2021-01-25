@@ -248,4 +248,69 @@ d3.csv("assets/data/data.csv").then(function(data, err) {
     .attr("y", 40)
     .attr("value", "age") // value to grab for event listener
     .classed("inactive", true)
-    .text("Age (Median)");  
+    .text("Age (Median)"); 
+    
+    var IncomeLabel = xlabelsGroup.append("text")
+    .attr("x", 0)
+    .attr("y", 60)
+    .attr("value", "income") // value to grab for event listener
+    .classed("inactive", true)
+    .text("Household Income (Median)");
+  
+  // Create group for three y-axis labels
+  var ylabelsGroup = chartGroup.append("g")
+    .attr("transform", "rotate(-90)")
+  
+  var ObeseLabel = ylabelsGroup.append("text")
+    .attr("y", -80)
+    .attr("x", -(height/2))
+    .attr("dy", "1em")
+    .attr("value", "obesity") // value to grab for event listener
+    .classed("inactive", true)
+    .text("Obese (%)");
+
+  var SmokesLabel = ylabelsGroup.append("text")
+    .attr("y", -60)
+    .attr("x", -(height/2))
+    .attr("dy", "1em")
+    .attr("value", "smokes") // value to grab for event listener
+    .classed("inactive", true)
+    .text("Smokes (%)");
+
+  var HealthLabel = ylabelsGroup.append("text")
+    .attr("y", -40)
+    .attr("x", -(height/2))
+    .attr("dy", "1em")
+    .attr("value", "healthcare") // value to grab for event listener
+    .classed("active", true)
+    .text("Lacks Healthcare (%)"); 
+  // updateToolTip function above csv import
+  circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
+  
+  // x axis labels event listener
+  xlabelsGroup.selectAll("text")
+    .on("click", function() {
+      // get value of selection
+      var value = d3.select(this).attr("value");
+      if (value !== chosenXAxis) {
+
+        // replaces chosenXAxis with value
+        chosenXAxis = value;
+
+        // console.log(chosenXAxis)
+
+        // functions here found above csv import
+        // updates x scale for new data
+        xLinearScale = xScale(data, chosenXAxis);
+
+        // updates x axis with transition
+        xAxis = renderXAxes(xLinearScale, xAxis); 
+        
+        // updates circles with new x values
+        circles = renderXCircles(circles, xLinearScale, chosenXAxis);
+
+        // updating text within circles
+          circlesText = renderXText(circlesText, xLinearScale, chosenXAxis)  
+  
+        // updates tooltips with new info
+          circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
