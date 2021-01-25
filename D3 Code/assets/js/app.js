@@ -193,3 +193,28 @@ d3.csv("assets/data/data.csv").then(function(data, err) {
     d.smokesLow = +d.smokesLow;
     d.smokesHigh = +d.smokesHigh;
   });
+
+  // xLinearScale function above csv import
+  var xLinearScale = xScale(data, chosenXAxis);
+  
+  // Create y scale function
+  var yLinearScale = yScale(data, chosenYAxis);
+
+  // Create initial axis functions
+  var bottomAxis = d3.axisBottom(xLinearScale);
+  var leftAxis = d3.axisLeft(yLinearScale);
+
+  // append x axis
+  var xAxis = chartGroup.append("g")
+    .attr("transform", `translate(0, ${height})`)
+    .call(bottomAxis);
+
+  // append y axis
+  var yAxis = chartGroup.append("g")
+    .call(leftAxis);
+
+  // append initial circles
+  var circlesGroup = chartGroup.selectAll("circle")
+    .data(data)
+    .enter()
+    .append("g");
