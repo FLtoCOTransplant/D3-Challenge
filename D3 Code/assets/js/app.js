@@ -218,3 +218,34 @@ d3.csv("assets/data/data.csv").then(function(data, err) {
     .data(data)
     .enter()
     .append("g");
+
+  var circles = circlesGroup.append("circle")
+    .attr("cx", d => xLinearScale(d[chosenXAxis]))
+    .attr("cy", d => yLinearScale(d[chosenYAxis]))
+    .attr("r", 15)
+    .classed('stateCircle', true);
+
+  // append text inside circles
+  var circlesText = circlesGroup.append("text")
+    .text(d => d.abbr)
+    .attr("dx", d => xLinearScale(d[chosenXAxis]))
+    .attr("dy", d => yLinearScale(d[chosenYAxis])+5) //add 5 to center the text in the circles
+    .classed('stateText', true);
+
+  // Create group for three x-axis labels
+  var xlabelsGroup = chartGroup.append("g")
+    .attr("transform", `translate(${width / 2}, ${height + 20})`);
+
+  var PovertyLabel = xlabelsGroup.append("text")
+    .attr("x", 0)
+    .attr("y", 20)
+    .attr("value", "poverty") // value to grab for event listener
+    .classed("active", true)
+    .text("In Poverty (%)");
+
+  var AgeLabel = xlabelsGroup.append("text")
+    .attr("x", 0)
+    .attr("y", 40)
+    .attr("value", "age") // value to grab for event listener
+    .classed("inactive", true)
+    .text("Age (Median)");  
