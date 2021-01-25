@@ -30,7 +30,7 @@ var chartGroup = svg.append("g")
 var xAxis = "poverty";
 var yAxis = "healthcare";
 
-// x axis functionality
+// x axis scale functionality
 function xScale(data, xAxis) {
   // create scales
   var xLinearScale = d3.scaleLinear()
@@ -43,7 +43,7 @@ function xScale(data, xAxis) {
 
 }
 
-// y axis functionality
+// y axis scale functionality
 function yScale(data, yAxis) {
   // create scales
   var yLinearScale = d3.scaleLinear()
@@ -52,4 +52,48 @@ function yScale(data, yAxis) {
 
   return yLinearScale;
 
+}
+
+// x axis variable update
+function updateXAxes(newXScale, xAxis) {
+  var bottomAxis = d3.axisBottom(newXScale);
+
+  xAxis.transition()
+    .duration(1000)
+    .call(bottomAxis);
+
+  return xAxis;
+}
+
+// y axis variable update
+function updateYAxes(newYScale, yAxis) {
+  var leftAxis = d3.axisLeft(newYScale);
+
+  yAxis.transition()
+    .duration(1000)
+    .call(leftAxis);
+
+  return yAxis;
+}
+
+// functions used for updating circles group with a transition to
+// new circles for x
+function updateXCircles(circlesGroup, newXScale, chosenXAxis) {
+
+  circlesGroup.transition()
+    .duration(1000)
+    .attr("cx", d => newXScale(d[chosenXAxis]))
+    .attr("dx", d => newXScale(d[chosenXAxis]));
+
+  return circlesGroup;
+}
+// new circles for y
+function updateYCircles(circlesGroup, newYScale, chosenYAxis) {
+
+  circlesGroup.transition()
+    .duration(1000)
+    .attr("cy", d => newYScale(d[chosenYAxis]))
+    .attr("dy", d => newYScale(d[chosenYAxis])+5)
+
+  return circlesGroup;
 }
