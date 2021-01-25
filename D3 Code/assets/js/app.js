@@ -30,7 +30,7 @@ var chartGroup = svg.append("g")
 var xAxis = "poverty";
 var yAxis = "healthcare";
 
-// function used for updating x-scale var upon click on axis label
+// x axis functionality
 function xScale(data, xAxis) {
   // create scales
   var xLinearScale = d3.scaleLinear()
@@ -40,5 +40,16 @@ function xScale(data, xAxis) {
     .range([0, width]);
 
   return xLinearScale;
+
+}
+
+// y axis functionality
+function yScale(data, yAxis) {
+  // create scales
+  var yLinearScale = d3.scaleLinear()
+    .domain([d3.min(data, d => d[yAxis])-2,d3.max(data, d => d[yAxis])+2])
+    .range([height, 0]);
+
+  return yLinearScale;
 
 }
